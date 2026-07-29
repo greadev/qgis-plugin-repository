@@ -1,3 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
+  <pyqgis_plugin name="qgis_plugin_tracks_poi_agol" version="1.5.6">
+    <description>Plugin de prueba para repositorio personal QGIS.</description>
+    <about>Plugin de ejemplo distribuido desde GitHub Pages.</about>
+    <version>1.5.6</version>
+    <qgis_minimum_version>3.28</qgis_minimum_version>
+    <author>GreaDevelopment</author>
+    <email>greadevelopment@gmail.com</email>
+    <repository>https://greadev.github.io/qgis-plugin-repository/</repository>
+    <tracker>https://greadev.github.io/qgis-plugin-repository/issues</tracker>
+    <homepage>https://greadev.github.io/qgis-plugin-repository/</homepage>
+    <download_url>https://greadev.github.io/qgis-plugin-repository/zips/qgis_plugin_tracks_poi_agol-1.5.6.zip</download_url>
+    <experimental>false</experimental>
+    <deprecated>false</deprecated>
+  </pyqgis_plugin>
 </plugins>
