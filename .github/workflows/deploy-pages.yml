@@ -1,0 +1,134 @@
+name: Publicar repositorio QGIS en GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    name: Validar repositorio QGIS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar contenido del repositorio
+        uses: actions/checkout@v6
+
+      - name: Comprobar archivos obligatorios
+        shell: bash
+        run: |
+          set -e
+
+          if [ ! -f "plugins.xml" ]; then
+            echo "ERROR: No existe plugins.xml"
+            exit 1
+          fi
+
+          if [ ! -f "index.html" ]; then
+            echo "ERROR: No existe index.html"
+            exit 1
+          fi
+
+          echo "Los archivos obligatorios existen."
+
+      - name: Instalar herramientas de validación
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils unzip
+
+      - name: Validar plugins.xml
+        shell: bash
+        run: |
+          xmllint --noout plugins.xml
+          echo "plugins.xml es un XML válido."
+
+      - name: Comprobar paquetes ZIP
+        shell: bash
+        run: |
+          set -e
+
+          if [ ! -d "packages" ]; then
+            echo "AVISO: No existe todavía el directorio packages."
+            exit 0
+          fi
+
+          ZIP_COUNT=$(find packages -maxdepth 1 -type f -name "*.zip" | wc -l)
+
+          if [ "$ZIP_COUNT" -eq 0 ]; then
+            echo "AVISO: El directorio packages no contiene archivos ZIP."
+            exit 0
+          fi
+
+          for zip_file in packages/*.zip; do
+            echo "Comprobando: $zip_file"
+            unzip -t "$zip_file"
+          done
+
+  deploy:
+    name: Desplegar GitHub Pages
+    needs: validate
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Descargar contenido del repositorio
+        uses: actions/checkout@v6
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar contenido publicable
+        shell: bash
+        run: |
+          set -e
+
+          rm -rf _site
+          mkdir -p _site
+
+          cp index.html _site/
+          cp plugins.xml _site/
+
+          if [ -f "README.md" ]; then
+            cp README.md _site/
+          fi
+
+          if [ -f ".nojekyll" ]; then
+            cp .nojekyll _site/
+          else
+            touch _site/.nojekyll
+          fi
+
+          if [ -d "packages" ]; then
+            cp -r packages _site/
+          fi
+
+          if [ -d "icons" ]; then
+            cp -r icons _site/
+          fi
+
+          echo "Contenido que se publicará:"
+          find _site -maxdepth 3 -type f -print
+
+      - name: Subir artefacto de GitHub Pages
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./_site
+
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
