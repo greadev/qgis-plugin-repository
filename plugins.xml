@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugins>
-  <pyqgis_plugin name="qgis_plugin_tracks_poi_agol" version="1.5.6">
-    <description>Plugin de prueba para repositorio personal QGIS.</description>
-    <about>Plugin de ejemplo distribuido desde GitHub Pages.</about>
+  <pyqgis_plugin name="AGOL Tracks & POI" version="1.5.6">
+    <description>Descarga tracks y puntos de interés de ArcGIS Online filtrados por fecha.</description>
+    <about>Plugin para configurar capas FeatureServer de ArcGIS Online, autenticarse con usuario/contraseña, descargar tracks y puntos de interés (POI) por fecha y descargar adjuntos de puntos Field Maps.</about>
     <version>1.5.6</version>
     <qgis_minimum_version>3.28</qgis_minimum_version>
     <author>GreaDevelopment</author>
