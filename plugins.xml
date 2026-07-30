@@ -10,7 +10,7 @@
     <repository>https://greadev.github.io/qgis-plugin-repository/</repository>
     <tracker>https://greadev.github.io/qgis-plugin-repository/issues</tracker>
     <homepage>https://greadev.github.io/qgis-plugin-repository/</homepage>
-    <download_url>https://greadev.github.io/qgis-plugin-repository/zips/qgis_plugin_tracks_poi_agol-1.5.6.zip</download_url>
+    <download_url>https://greadev.github.io/qgis-plugin-repository/zips/qgis_plugin_tracks_poi_agol.zip</download_url>
     <experimental>false</experimental>
     <deprecated>false</deprecated>
   </pyqgis_plugin>
